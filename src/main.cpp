@@ -50,34 +50,35 @@ void setup() {
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 }
 
-// The loop function runs over and over again forever.
 void loop() {
-      // 1. Light up the LED to show we're recording.
-      digitalWrite(LED_BUILTIN, HIGH);
+  // Turn on LED to show activity
+  digitalWrite(LED_BUILTIN, HIGH);
 
-      // 2. Read sensor data
-      sensors_event_t a, g, temp;
-      mpu.getEvent(&a, &g, &temp);
+  // Read sensor data
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
 
-      // Convert gyro from rad/s to deg/s
-      float gyroX = g.gyro.x * 180 / M_PI;
-      float gyroY = g.gyro.y * 180 / M_PI;
-      float gyroZ = g.gyro.z * 180 / M_PI;
-      
-      // 3. Print data in CSV format
-      Serial.print(a.acceleration.x);
-      Serial.print(",");
-      Serial.print(a.acceleration.y);
-      Serial.print(",");
-      Serial.print(a.acceleration.z);
-      Serial.print(",");
-      Serial.print(gyroX);
-      Serial.print(",");
-      Serial.print(gyroY);
-      Serial.print(",");
-      Serial.print(gyroZ);
-      Serial.print("\n");
+  // Convert gyro rad/s → deg/s
+  float gyroX = g.gyro.x * 180 / M_PI;
+  float gyroY = g.gyro.y * 180 / M_PI;
+  float gyroZ = g.gyro.z * 180 / M_PI;
 
-      // 4. Wait for a short period to control the data sampling rate.
-      delay(10);
+  // Get timestamp in milliseconds
+  unsigned long t = millis();
+
+  // CSV output: t, ax, ay, az, gx, gy, gz
+  Serial.print(t);
+  Serial.print(",");
+  Serial.print(a.acceleration.x);
+  Serial.print(",");
+  Serial.print(a.acceleration.y);
+  Serial.print(",");
+  Serial.print(a.acceleration.z);
+  Serial.print(",");
+  Serial.print(gyroX);
+  Serial.print(",");
+  Serial.print(gyroY);
+  Serial.print(",");
+  Serial.print(gyroZ);
+  Serial.print("\n");
 }
